@@ -30,7 +30,11 @@ jobs:
 
       - name: Prepare site files
         run: |
+          set -euo pipefail
           mkdir -p _site
+          for file in index.html style.css script.js; do
+            [ -f "$file" ] || { echo "Missing required file: $file" >&2; exit 1; }
+          done
           cp index.html style.css script.js _site/
 
       - name: Upload artifact
